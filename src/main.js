@@ -183,4 +183,111 @@ window.onload = function(){
             document.getElementById('icon' + event.target.parentNode.id).className ='sf-icon-star-empty';
         }
     }
-};
+
+    function crearFiltros(){
+        let parent = document.getElementById('filtros');
+        let filtro = document.createElement('li');
+        filtro.className = 'filtroActivo';
+        filtro.id = 'all';
+        filtro.innerHTML = 'All';
+        filtro.onclick= cargarRifasPorFiltro;
+        parent.appendChild(filtro);
+        let names = Object.getOwnPropertyNames(raffles);
+        let filtros ={};
+        for(let i = 0; i < names.length; i++){
+            let countries = raffles[names[i]].country.split(', ');
+            for (let j = 0; j<countries.length;j++){
+                switch (countries[j]){
+                    case 'Fr':
+                    filtros['France']= countries[j];
+                    break;
+                    case 'Ger':
+                    filtros['Germany']= countries[j];
+                    break;
+                    case 'Swe':
+                    filtros['Sweeden']= countries[j];
+                    break;
+                    default:
+                    filtros[countries[j]]= countries[j] ; 
+            }
+               
+            }
+             
+        }
+        ['Collect','Post','In-Store','Raffle','FCFS',...Object.getOwnPropertyNames(filtros)].forEach(
+            function(elemento) {
+                filtro = document.createElement('li');
+                filtro.innerHTML = elemento;
+                filtro.onclick = cargarRifasPorFiltro;
+                filtro.className = 'filtro';
+                parent.appendChild(filtro);
+          });
+
+    }
+    crearFiltros();
+
+    function cargarRifasPorFiltro (event){
+        let filtrosStorage;
+        if (window.sessionStorage.getItem('filtros')){
+                filtrosStorage = JSON.parse(window.sessionStorage.getItem('filtros'));
+        } else {
+            filtrosStorage = {};
+        }
+        let rifas = document.getElementById('rifas');
+        let padre = rifas.parentNode;
+        rifas.remove();
+        rifas = document.createElement('div');
+        rifas.id ='rifas';
+        padre.appendChild(rifas);
+        switch(event.target.innerHTML){
+            case 'All':
+                cargarRifas(raffles);
+                let filtros = document.getElementsByClassName('filtroActivo');
+                for (let i = 0; i < filtros.length; i++) {
+                    filtros[i].className='filtro';
+                
+                }
+                document.getElementById('all').className = 'filtroActivo';
+                window.sessionStorage.setItem('filtros',JSON.stringify({}));
+                break;
+            default:
+            if(filtrosStorage[event.target.innerHTML]) {
+                delete filtrosStorage[event.target.innerHTML]; 
+                window.sessionStorage.setItem('filtros',JSON.stringify(filtrosStorage));
+            } else {
+                filtrosStorage[event.target.innerHTML] = event.target.innerHTML;
+                window.sessionStorage.setItem('filtros',JSON.stringify(filtrosStorage));
+
+            }
+            
+            document.getElementById('all').className = 'filtro';
+            event.target.className = 'filtroActivo';
+            let rifasFiltradas = [];
+            let nombres = Object.getOwnPropertyNames(raffles);
+            for (let i = 0; i< nombres.length; i++ ) {
+                rifasFiltradas.push(nombres[i]);
+                console.log(rifasFiltradas);
+            }
+            rifasFiltradas = rifasFiltradas.filter(function(elemento){
+                let filnombres =  Object.getOwnPropertyNames(filtrosStorage);
+                    for (let j = 0; j< filnombres.length; j++ ){
+                        console.log(JSON.stringify(raffles[elemento]));
+                      if (!JSON.stringify(raffles[elemento]).includes(filnombres[j])){
+                          return false;
+                      }  
+                    }
+                return true;
+            });
+            console.log(rifasFiltradas);
+                let rifasFiltradasObj = {};
+                for (let i = 0; i< rifasFiltradas.length; i++ ) {
+                    rifasFiltradasObj[rifasFiltradas[i]] = raffles[rifasFiltradas[i]];
+            }
+            console.log(rifasFiltradasObj);
+            cargarRifas(rifasFiltradasObj);
+
+            }
+        }
+    };
+
+

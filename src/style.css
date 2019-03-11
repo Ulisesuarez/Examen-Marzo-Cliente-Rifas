@@ -42,3 +42,16 @@ header{
 .announced{
     background-color: gray;
 }
+
+#filtros{
+    list-style: none;
+    display: inline;
+}
+.filtroActivo{
+    background-color: greenyellow;
+    max-width: 4em;
+    cursor: pointer;
+}
+.filtro{
+    cursor: pointer;
+}
