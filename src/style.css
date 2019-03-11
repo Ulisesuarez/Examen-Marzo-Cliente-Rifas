@@ -22,3 +22,23 @@
 header{
     background-color: black;
 }
+
+.logos{
+    width: 60px;
+    height: auto;
+}
+.names{
+    font-weight: bold;
+}
+
+.live{
+    background-color: greenyellow;
+}
+
+.closed{
+    background-color: brown;
+}
+
+.announced{
+    background-color: gray;
+}

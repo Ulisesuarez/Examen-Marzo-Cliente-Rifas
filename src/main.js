@@ -96,27 +96,91 @@ window.onload = function(){
         document.getElementById('precio').innerHTML = shoe.price;
     }
     cargarZapatilla(shoe);
-    let names=Object.getOwnPropertyNames(raffles);
-    for(let i=0; i<names.length;i++){
+
+    function cargarRifas(raffles){
+        let names = Object.getOwnPropertyNames(raffles);
+        for(let i = 0; i < names.length; i++){
             let container = document.createElement('div');
+            container.id = names[i] + i.toString();
             let image = document.createElement('img');
             image.src = raffles[names[i]].logo;
-            image.className = logo
+            image.className = 'logos';
             container.appendChild(image);
             let name = document.createElement('p');
+            name.className = 'names';
             name.innerHTML = names[i];
             container.appendChild(name);
+            let boton = document.createElement('button');
+            boton.onclick = function(){
+                location.href = raffles[names[i]].url;
+            };
+            boton.onmouseover = function(){
+                boton.style.position = 'relative';
+                boton.style.top = '-5px';
+            };
+            boton.onmouseout = function(){
+                boton.style.position = 'initial';
+                boton.style.top = '0';
+            };
+            boton.className = raffles[names[i]].Opens;
+            switch (raffles[names[i]].Opens){
+                case 'live':
+                boton.innerHTML = 'ENTRAR RAFFLE';
+                if (raffles[names[i]].Closes === 'closed'){
+                    boton.innerHTML = 'CLOSED';
+                    boton.className =' closed';
+                }
+                break;
+                case 'announced':
+                boton.innerHTML = 'ANNOUNCED';
+                break;
+            }
+
             let raffleNames = Object.getOwnPropertyNames(raffles[names[i]]);
             for (let j=0; j<raffleNames.length;j++ ){
-                if (raffleNames[j] !== 'logo'){
+                if (raffleNames[j] !== 'logo' && raffleNames[j] !== 'url' ){
                     let data = document.createElement('p');
                     data.className= raffleNames[j];
                     data.innerHTML = raffles[names[i]][raffleNames[j]];
                     container.appendChild(data);
                 }
             }
+            container.appendChild(boton);
+            let mark = document.createElement('div');
+            let icon = document.createElement('i');
+            icon.id ='icon' + container.id;
+            mark.style.fontWeight = 'bold';
+            if (window.localStorage.getItem(container.id) === null ||
+                window.localStorage.getItem(container.id) === 'false') {
+                mark.innerHTML = 'Mark as entered';
+                icon.className ='sf-icon-star-empty';
+            } else {
+                mark.innerHTML = 'Entered';
+                icon.className ='sf-icon-star';
+            }
+            container.appendChild(icon);
+            mark.onclick = guardarMarcado;
+            mark.onmouseover = function() {
+                mark.style.cursor = 'pointer';
+            };
+            container.appendChild(mark);
             document.getElementById('rifas').appendChild(container);
-    };
+        }
+    }
+    cargarRifas(raffles);
 
+    function guardarMarcado(event){
+        console.log('icon'+event.target.parentNode.id);
+        let icon = document.createElement('i');
+        if (window.localStorage.getItem(event.target.parentNode.id) === null ||
+        window.localStorage.getItem(event.target.parentNode.id) === 'false') {
+            window.localStorage.setItem(event.target.parentNode.id, 'true');
+            event.target.innerHTML = 'Entered';
+            document.getElementById('icon' + event.target.parentNode.id).className ='sf-icon-star';
+        } else{
+            window.localStorage.setItem(event.target.parentNode.id, 'false');
+            event.target.innerHTML = 'Mark as entered';
+            document.getElementById('icon' + event.target.parentNode.id).className ='sf-icon-star-empty';
+        }
+    }
 };
-
