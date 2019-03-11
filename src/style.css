@@ -1,0 +1,24 @@
+#menu-standard{
+    list-style: none;
+    display: inline;
+    margin-left:30vw;
+}
+
+.menu-item{
+    vertical-align: center;
+    display: inline;
+    margin-left: 1em;
+    font-family: sans-serif;
+}
+.menu-item a{
+    text-decoration: none;
+    color:white
+}
+.logo{
+    margin-left: 10vw;
+    width: 40px;
+    display: inline;
+}
+header{
+    background-color: black;
+}
