@@ -1,0 +1,11 @@
+{
+  "name": "raffle-in-the-jsungle-ulises_bruno_suarez_del_real_ferriol",
+  "version": "1.0.0",
+  "description": "Raffle in the JSungle ===================== #### Examen JS client-side DWEC Dual Febrero 2019",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Ulises Bruno Suárez del Real Ferriol",
+  "license": "ISC"
+}
