@@ -170,7 +170,6 @@ window.onload = function(){
     cargarRifas(raffles);
 
     function guardarMarcado(event){
-        console.log('icon'+event.target.parentNode.id);
         let icon = document.createElement('i');
         if (window.localStorage.getItem(event.target.parentNode.id) === null ||
         window.localStorage.getItem(event.target.parentNode.id) === 'false') {
