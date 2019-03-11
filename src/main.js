@@ -99,7 +99,7 @@ window.onload = function(){
 
     function cargarRifas(raffles){
         let names = Object.getOwnPropertyNames(raffles);
-        for(let i = 0; i < names.length; i++){
+        for(let i = 0; i < names.length; i += 1){
             let container = document.createElement('div');
             container.id = names[i] + i.toString();
             let image = document.createElement('img');
@@ -137,7 +137,7 @@ window.onload = function(){
             }
 
             let raffleNames = Object.getOwnPropertyNames(raffles[names[i]]);
-            for (let j=0; j<raffleNames.length;j++ ){
+            for (let j=0; j<raffleNames.length;j += 1 ){
                 if (raffleNames[j] !== 'logo' && raffleNames[j] !== 'url' ){
                     let data = document.createElement('p');
                     data.className= raffleNames[j];
@@ -193,18 +193,18 @@ window.onload = function(){
         parent.appendChild(filtro);
         let names = Object.getOwnPropertyNames(raffles);
         let filtros ={};
-        for(let i = 0; i < names.length; i++){
+        for(let i = 0; i < names.length; i += 1){
             let countries = raffles[names[i]].country.split(', ');
-            for (let j = 0; j<countries.length;j++){
+            for (let j = 0; j<countries.length;j += 1){
                 switch (countries[j]){
                     case 'Fr':
-                    filtros['France']= countries[j];
+                    filtros.France= countries[j];
                     break;
                     case 'Ger':
-                    filtros['Germany']= countries[j];
+                    filtros.Germany= countries[j];
                     break;
                     case 'Swe':
-                    filtros['Sweeden']= countries[j];
+                    filtros.Sweeden= countries[j];
                     break;
                     default:
                     filtros[countries[j]]= countries[j] ; 
@@ -243,7 +243,7 @@ window.onload = function(){
             case 'All':
                 cargarRifas(raffles);
                 let filtros = document.getElementsByClassName('filtroActivo');
-                for (let i = 0; i < filtros.length; i++) {
+                for (let i = 0; i < filtros.length; i += 1) {
                     filtros[i].className='filtro';
                 
                 }
@@ -264,12 +264,12 @@ window.onload = function(){
             document.getElementById('all').className = 'filtro';
             let rifasFiltradas = [];
             let nombres = Object.getOwnPropertyNames(raffles);
-            for (let i = 0; i< nombres.length; i++ ) {
+            for (let i = 0; i< nombres.length; i += 1 ) {
                 rifasFiltradas.push(nombres[i]);
             }
             rifasFiltradas = rifasFiltradas.filter(function(elemento){
                 let filnombres =  Object.getOwnPropertyNames(filtrosStorage);
-                    for (let j = 0; j< filnombres.length; j++ ){
+                    for (let j = 0; j< filnombres.length; j += 1 ){
                         if ( filnombres[j] === 'Germany' ||
                          filnombres[j] === 'Sweeden'||
                          filnombres[j] === 'France') {
@@ -284,8 +284,8 @@ window.onload = function(){
                 return true;
             });
                 let rifasFiltradasObj = {};
-                for (let i = 0; i< rifasFiltradas.length; i++ ) {
-                    rifasFiltradasObj[rifasFiltradas[i]] = raffles[rifasFiltradas[i]];
+                for (let i = 0; i< rifasFiltradas.length; i += 1 ) {
+                       rifasFiltradasObj[rifasFiltradas[i]] = raffles[rifasFiltradas[i]];
             }
             cargarRifas(rifasFiltradasObj);
 
