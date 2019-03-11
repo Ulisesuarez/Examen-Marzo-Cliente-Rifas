@@ -87,7 +87,7 @@ let raffles = {
 
 };
 window.onload = function(){
-
+    window.sessionStorage.clear();
     function cargarZapatilla(shoe){
         document.getElementById('titulo').innerHTML = shoe.model;
         document.getElementById('subtitulo').innerHTML = shoe.colour;
@@ -230,6 +230,7 @@ window.onload = function(){
         let filtrosStorage;
         if (window.sessionStorage.getItem('filtros')){
                 filtrosStorage = JSON.parse(window.sessionStorage.getItem('filtros'));
+                
         } else {
             filtrosStorage = {};
         }
@@ -247,43 +248,46 @@ window.onload = function(){
                     filtros[i].className='filtro';
                 
                 }
-                document.getElementById('all').className = 'filtroActivo';
                 window.sessionStorage.setItem('filtros',JSON.stringify({}));
                 break;
             default:
             if(filtrosStorage[event.target.innerHTML]) {
-                delete filtrosStorage[event.target.innerHTML]; 
+                delete filtrosStorage[event.target.innerHTML];
                 window.sessionStorage.setItem('filtros',JSON.stringify(filtrosStorage));
+                event.target.className = 'filtro';
             } else {
                 filtrosStorage[event.target.innerHTML] = event.target.innerHTML;
                 window.sessionStorage.setItem('filtros',JSON.stringify(filtrosStorage));
+                event.target.className = 'filtroActivo';
 
             }
             
             document.getElementById('all').className = 'filtro';
-            event.target.className = 'filtroActivo';
             let rifasFiltradas = [];
             let nombres = Object.getOwnPropertyNames(raffles);
             for (let i = 0; i< nombres.length; i++ ) {
                 rifasFiltradas.push(nombres[i]);
-                console.log(rifasFiltradas);
             }
             rifasFiltradas = rifasFiltradas.filter(function(elemento){
                 let filnombres =  Object.getOwnPropertyNames(filtrosStorage);
                     for (let j = 0; j< filnombres.length; j++ ){
-                        console.log(JSON.stringify(raffles[elemento]));
-                      if (!JSON.stringify(raffles[elemento]).includes(filnombres[j])){
-                          return false;
+                        if ( filnombres[j] === 'Germany' ||
+                         filnombres[j] === 'Sweeden'||
+                         filnombres[j] === 'France') {
+                            if (!raffles[elemento].country.includes(filnombres[j].substring(0,2))) {
+                                    return false;
+                            }
+                            
+                        } else if (!JSON.stringify(raffles[elemento]).includes(filnombres[j])){
+                            return false;
                       }  
                     }
                 return true;
             });
-            console.log(rifasFiltradas);
                 let rifasFiltradasObj = {};
                 for (let i = 0; i< rifasFiltradas.length; i++ ) {
                     rifasFiltradasObj[rifasFiltradas[i]] = raffles[rifasFiltradas[i]];
             }
-            console.log(rifasFiltradasObj);
             cargarRifas(rifasFiltradasObj);
 
             }
